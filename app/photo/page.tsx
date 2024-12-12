@@ -49,7 +49,6 @@ export default function PhotographyPage() {
 	return (
 		<main>
 			<PageTitle components={ title } />
-			<MasonryBlock components={components} />
 			<MasonryLayout components={photoList} />
 		</main>
 	);
