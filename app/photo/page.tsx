@@ -29,9 +29,10 @@ import Rexburg from "@/public/photography/rexburg.jpg"
 import Wrightslake from "@/public/photography/wrights-lake.jpg"
 import Wrightslake2 from "@/public/photography/wrights-lake-2.jpg"
 import Sacramentostreet from "@/public/photography/sacramento-street.jpg"
-import { StaticImageData } from "next/image";
+import Image, { StaticImageData } from "next/image";
 import MasonryBlock from "@/components/ui/masonry-block";
 import PageTitle from "@/components/ui/page-title";
+import { MasonryLayout } from "thread-ui";
 const title: { title: string; subtitle?: string } = {
     title: "My Photography",
     subtitle: "Here are some of my photos I've taken over the years. I got interested in photography because my sister is an amazing photographer and I love capturing moments."
@@ -41,12 +42,15 @@ const photos: { src: StaticImageData; alt: string }[] = [{ src: Andrewfisherpoin
 const components: { title?: string; caption?: string; items: { src: StaticImageData; alt: string }[]} = {
     items: photos
 }
+
+const photoList = photos.map((photo) => <Image src={photo.src} alt={photo.alt} />)
 export default function PhotographyPage() {
     
 	return (
 		<main>
 			<PageTitle components={ title } />
 			<MasonryBlock components={components} />
+			<MasonryLayout components={photoList} />
 		</main>
 	);
 }
