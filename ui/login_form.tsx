@@ -7,9 +7,6 @@ import { authenticate } from "@/lib/actions";
 export const LoginForm = () => {
     const [errorMessage, formAction] = useFormState(authenticate, undefined);
 
-
-
- 
     return (
         
         <form 
