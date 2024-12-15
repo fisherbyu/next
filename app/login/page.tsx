@@ -1,6 +1,4 @@
 "use client"
-import { Button, Divider } from "thread-ui";
-import { useState } from "react";
 import { LoginForm } from "@/ui/login_form";
 
 export default function Login() {
