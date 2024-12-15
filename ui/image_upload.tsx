@@ -1,13 +1,16 @@
 // components/ImageUpload.tsx
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, FormEvent } from 'react';
 import { Upload } from 'lucide-react';
+import { Button } from 'thread-ui';
 
 const ImageUpload = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [uploadStatus, setUploadStatus] = useState('');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [customFilename, setCustomFilename] = useState('');
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -19,15 +22,19 @@ const ImageUpload = () => {
     setIsDragging(false);
   }, []);
 
-  const handleDrop = useCallback(async (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
-
-    const file = e.dataTransfer.files[0];
+  const processFile = (file: File) => {
     if (!file || !file.type.startsWith('image/')) {
-      setUploadStatus('Please drop an image file');
+      setUploadStatus('Please select an image file');
+      setSelectedFile(null);
+      setCustomFilename('');
       return;
     }
+
+    // Extract original filename without extension for the input field
+    const extension = file.name.split('.').pop() || '';
+    const originalName = file.name.replace(`.${extension}`, '');
+    setCustomFilename(originalName);
+    setSelectedFile(file);
 
     // Create preview
     const reader = new FileReader();
@@ -38,10 +45,39 @@ const ImageUpload = () => {
       }
     };
     reader.readAsDataURL(file);
+  };
 
-    // Prepare form data for upload
+  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    processFile(file);
+  }, []);
+
+  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      processFile(file);
+    }
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    if (!selectedFile) {
+      setUploadStatus('Please select a file first');
+      return;
+    }
+
+    // Create new file with custom filename
+    const extension = selectedFile.name.split('.').pop() || '';
+    const newFilename = `${customFilename}.${extension}`;
+    
     const formData = new FormData();
-    formData.append('image', file);
+    const modifiedFile = new File([selectedFile], newFilename, {
+      type: selectedFile.type,
+    });
+    formData.append('image', modifiedFile);
 
     try {
       setUploadStatus('Uploading...');
@@ -65,10 +101,10 @@ const ImageUpload = () => {
         setUploadStatus('Upload failed: Unknown error');
       }
     }
-  }, []);
+  };
 
   return (
-    <div className="w-full max-w-md mx-auto p-4">
+    <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto p-4">
       <div
         className={`border-2 border-dashed rounded-lg p-8 text-center ${
           isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
@@ -81,17 +117,52 @@ const ImageUpload = () => {
         <p className="mt-2 text-sm text-gray-600">
           Drag and drop your image here
         </p>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-gray-500 mb-4">
           Supports: JPG, PNG, GIF
         </p>
-        
-        {preview && (
-          <div className="mt-4">
-            <img
-              src={preview}
-              alt="Preview"
-              className="max-w-full h-auto rounded"
+
+        <div className="flex items-center justify-center">
+          <label className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded cursor-pointer">
+            Select File
+            <input
+              type="file"
+              className="hidden"
+              accept="image/*"
+              onChange={handleFileInput}
             />
+          </label>
+        </div>
+        
+        {selectedFile && (
+          <div className="mt-4">
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Filename:
+              </label>
+              <input
+                type="text"
+                value={customFilename}
+                onChange={(e) => setCustomFilename(e.target.value)}
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter filename (without extension)"
+                required
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Extension: .{selectedFile.name.split('.').pop()}
+              </p>
+            </div>
+            
+            {preview && (
+              <img
+                src={preview}
+                alt="Preview"
+                className="max-w-full h-auto rounded"
+              />
+            )}
+            <Button type='submit'>
+                Upload Image
+            </Button>
+            
           </div>
         )}
         
@@ -101,7 +172,7 @@ const ImageUpload = () => {
           </p>
         )}
       </div>
-    </div>
+    </form>
   );
 };
 

@@ -1,7 +1,8 @@
+// app/api/uploadPhoto/route.ts
 import { writeFile } from 'fs/promises';
 import { NextResponse } from 'next/server';
 import path from 'path';
-import { mkdir } from 'fs/promises';
+import { mkdir, access } from 'fs/promises';
 
 export async function POST(request: Request) {
   try {
@@ -34,25 +35,29 @@ export async function POST(request: Request) {
       // Directory already exists
     }
 
-    // Sanitize filename: remove all special characters and spaces
+    // Get file extension and clean the filename
     const fileExtension = path.extname(file.name).toLowerCase();
     const baseFilename = path.basename(file.name, fileExtension)
-      .replace(/[^a-zA-Z0-9]/g, '')
-      .slice(0, 32); // Limit base filename length
+      .replace(/[^a-zA-Z0-9-]/g, '') // Allow hyphens in the filename
+      .slice(0, 32);
 
-    // Create unique filename with timestamp
-    const uniqueSuffix = Date.now();
-    const filename = `${baseFilename}-${uniqueSuffix}${fileExtension}`;
+    let filename = `${baseFilename}${fileExtension}`;
+    let filepath = path.join(uploadsDir, filename);
     
-    // Ensure the filename only contains safe characters
-    if (!/^[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]\.[a-zA-Z0-9]+$/.test(filename)) {
-      return NextResponse.json(
-        { error: 'Invalid filename' },
-        { status: 400 }
-      );
+    // Check if file exists and append number if it does
+    let counter = 1;
+    while (true) {
+      try {
+        await access(filepath);
+        // File exists, try next number
+        filename = `${baseFilename}-${counter}${fileExtension}`;
+        filepath = path.join(uploadsDir, filename);
+        counter++;
+      } catch {
+        // File doesn't exist, we can use this name
+        break;
+      }
     }
-
-    const filepath = path.join(uploadsDir, filename);
     
     // Save the file using Uint8Array
     await writeFile(filepath, new Uint8Array(buffer));
