@@ -15,7 +15,7 @@ export default function CoreFooter() {
 						<Image src={ AFLogo } alt="AF" className="mx-auto" />
 					</Link>
 					<span className="mx-auto mt-2 text-sm text-gray-500">
-						Created by Andrew Fisher
+						<Link href="/login">Created by Andrew Fisher</Link>
 					</span>
 				</p>
 				<div className="flex justify-center mt-8 space-x-6">
