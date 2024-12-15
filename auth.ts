@@ -21,15 +21,17 @@ export const { auth, signIn, signOut } = NextAuth({
     Credentials({
       async authorize(credentials): Promise<User | null> {
         const parsedCredentials = z
-          .object({ password: z.string().min(6) })
+          .object({ password: z.string().min(2) })
           .safeParse(credentials);
-
         if (parsedCredentials.success) {
           const { password } = parsedCredentials.data;
           const adminPassword = getPassword();
           if (!adminPassword) return null;
+          console.log(adminPassword)
 
-          const passwordsMatch = await bcrypt.compare(password, adminPassword);
+          // const passwordsMatch = await bcrypt.compare(password, adminPassword);
+          const passwordsMatch = (password === adminPassword)
+          
           if (passwordsMatch) return Admin;
         }
 
