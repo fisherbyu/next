@@ -14,6 +14,7 @@
     "clsx": "^2.1.0",
     "lucide-react": "^0.343.0",
     "next": "^14.2.16",
+    "next-auth": "^5.0.0-beta.25",
     "pm2": "^5.3.1",
     "react": "^18",
     "react-dom": "^18",
