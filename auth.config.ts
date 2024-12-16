@@ -1,3 +1,4 @@
+// auth.config.ts
 import type { NextAuthConfig } from 'next-auth';
 
 export const authConfig = {
@@ -8,13 +9,14 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith('/admin');
-      if (isOnDashboard) {
-        if (isLoggedIn) return true;
-        return false; // Redirect unauthenticated users to login page
-      } else if (isLoggedIn) {
-        return Response.redirect(new URL('/admin', nextUrl));
+      const isInAdmin = nextUrl.pathname.startsWith('/admin');
+      
+      if (isInAdmin) {
+        // If trying to access admin pages, require authentication
+        return isLoggedIn;
       }
+
+      // All other pages are public
       return true;
     },
   },
