@@ -102,58 +102,60 @@ const ImageUpload = () => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className="w-full mx-auto p-4 flex items-center justify-center">
-			{!selectedFile ? (
-				<div
-					className={`border-2 border-dashed rounded-lg p-8 text-center ${
-						isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
-					}`}
-					onDragOver={handleDragOver}
-					onDragLeave={handleDragLeave}
-					onDrop={handleDrop}
-				>
-					<Upload className="mx-auto h-12 w-12 text-gray-400" />
-					<p className="mt-2 text-sm text-gray-600">Drag and drop your image here</p>
-					<p className="text-xs text-gray-500 mb-4">Supports: JPG, PNG, GIF</p>
+		<section className="container">
+			<form onSubmit={handleSubmit} className="w-full mx-auto p-4 flex items-center justify-center">
+				{!selectedFile ? (
+					<div
+						className={`border-2 border-dashed rounded-lg p-8 text-center ${
+							isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
+						}`}
+						onDragOver={handleDragOver}
+						onDragLeave={handleDragLeave}
+						onDrop={handleDrop}
+					>
+						<Upload className="mx-auto h-12 w-12 text-gray-400" />
+						<p className="mt-2 text-sm text-gray-600">Drag and drop your image here</p>
+						<p className="text-xs text-gray-500 mb-4">Supports: JPG, PNG, GIF</p>
 
-					<div className="flex items-center justify-center">
-						<label className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded cursor-pointer">
-							Select File
-							<input type="file" className="hidden" accept="image/*" onChange={handleFileInput} />
-						</label>
+						<div className="flex items-center justify-center">
+							<label className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded cursor-pointer">
+								Select File
+								<input type="file" className="hidden" accept="image/*" onChange={handleFileInput} />
+							</label>
+						</div>
 					</div>
-				</div>
-			) : (
-				<div className="flex flex-col md:flex-row gap-4 items-center justify-around sm:w-full lg:w-8/12">
-					{preview && (
-						<img
-							src={preview}
-							alt="Preview"
-							className="w-full h-full object-cover rounded"
-							style={{ height: 'auto', width: 'auto', maxWidth: '256px', maxHeight: '500px' }}
-						/>
-					)}
+				) : (
+					<div className="flex flex-col md:flex-row gap-4 items-center justify-around sm:w-full lg:w-8/12">
+						{preview && (
+							<img
+								src={preview}
+								alt="Preview"
+								className="w-full h-full object-cover rounded"
+								style={{ height: 'auto', width: 'auto', maxWidth: '256px', maxHeight: '500px' }}
+							/>
+						)}
 
-					<div className="mb-4 flex flex-col gap-2 items-center justify-center md:self-end h-10">
-						<label className="block text-sm font-medium text-gray-700 mb-1">Filename:</label>
-						<input
-							type="text"
-							value={customFilename}
-							onChange={(e) => setCustomFilename(e.target.value)}
-							className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-							placeholder="Enter filename (without extension)"
-							required
-						/>
-						<p className="text-xs text-gray-500 mt-1">Extension: .{selectedFile.name.split('.').pop()}</p>
-						<Button type="submit" fullWidth>
-							Upload Image
-						</Button>
+						<div className="mb-4 flex flex-col gap-2 items-center justify-center md:self-end h-10">
+							<label className="block text-sm font-medium text-gray-700 mb-1">Filename:</label>
+							<input
+								type="text"
+								value={customFilename}
+								onChange={(e) => setCustomFilename(e.target.value)}
+								className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+								placeholder="Enter filename (without extension)"
+								required
+							/>
+							<p className="text-xs text-gray-500 mt-1">Extension: .{selectedFile.name.split('.').pop()}</p>
+							<Button type="submit" fullWidth>
+								Upload Image
+							</Button>
+						</div>
 					</div>
-				</div>
-			)}
+				)}
 
-			{uploadStatus && <p className="mt-2 text-sm text-gray-600">{uploadStatus}</p>}
-		</form>
+				{uploadStatus && <p className="mt-2 text-sm text-gray-600">{uploadStatus}</p>}
+			</form>
+		</section>
 	);
 };
 
