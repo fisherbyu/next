@@ -13,6 +13,7 @@ import Philippines from '@/public/home/philippines.jpg';
 // Import Components
 import { Separator } from '@/components/ui/separator';
 import GridBlock from '@/components/ui/grid-block';
+import { Divider } from 'thread-ui';
 
 // Declare Content
 const places: {
@@ -141,7 +142,9 @@ export default function Home() {
 		<main>
 			<br />
 			<HeroBlock />
-			<Separator className="container w-9/12 my-9" />
+			<div className="container my-9">
+				<Divider />
+			</div>
 			<h1 className="container font-semibold md:py-6 lg:py-3 text-center text-3xl md:text-4xl xl:text-5xl">About Me</h1>
 			<GridBlock components={places} />
 			<GridBlock components={movies} />
