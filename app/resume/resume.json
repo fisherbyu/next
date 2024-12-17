@@ -22,6 +22,20 @@
 	],
 	"jobs": [
 		{
+			"title": "Front End Software Developer, Intern",
+			"company": "BambooHR",
+			"start_date": "05/2024",
+			"end_date": "8/24",
+			"city": "Draper",
+			"state": "UT",
+			"country": "USA",
+			"descriptions": [
+				"Led end-to-end development as epic driver for the Report Pages Navigation project, managing the planning, implementation, testing, and deployment phases of this UI transition initiative",
+				"Contributed to the modernization of the reporting platform's user interface, focusing on improving navigation and user experience across the reporting system",
+				"Developed enhanced functionality for a new report builder feature, implementing sorting capabilities and adding a history interface to improve report creation workflow"
+			]
+		},
+		{
 			"title": "Full-Stack Developer + Systems Manager",
 			"company": "Triark Roofing Co.",
 			"start_date": "04/2021",
