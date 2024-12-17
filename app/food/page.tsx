@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import NotionPreview from '@/components/ui/notion-preview';
+import { Article } from '@/lib/definitions/articles';
+import { InfoCard } from 'thread-ui';
 import recipes from '@/app/food/recipes.json';
 import PageTitle from '@/components/ui/page-title';
 const title: { title: string; subtitle?: string } = {
@@ -7,16 +8,19 @@ const title: { title: string; subtitle?: string } = {
 	subtitle:
 		"I've loved cooking and baking for as long as I remember.    Its a way for me to express love to others while fulfilling their basic needs and a creative outlet that never runs dry.    Here are some of my favorite recipes.",
 };
+
+const typedRecipes = recipes as Article[];
+
 export default function FoodPage() {
 	return (
 		<main>
 			<PageTitle components={title} />
 			<section className="container">
 				<div className="grid grid-cols-1 gap-6 mt-8 md:grid-cols-2 lg:grid-cols-3 ">
-					{recipes
+					{typedRecipes
 						.sort((a, b) => a.title.localeCompare(b.title))
 						.map((recipe, index) => (
-							<NotionPreview key={index} page={recipe} />
+							<InfoCard key={index} title={recipe.title} url={recipe.url} icon={recipe.icon} img={recipe.img} />
 						))}
 				</div>
 			</section>
