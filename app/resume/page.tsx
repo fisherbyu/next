@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import { Separator } from '@/components/ui/separator';
 import BYULogo from '@/public/resume/byu-logo.png';
 import Image from 'next/image';
 import resume from '@/app/resume/resume.json';
 import PageTitle from '@/components/ui/page-title';
+import { Divider } from 'thread-ui';
 
 const title: { title: string; subtitle?: string } = {
 	title: 'Resume',
@@ -48,7 +48,7 @@ export default function ResumePage() {
 					>
 						<div>
 							<h1 className="text-xl font-semibold leading-none tracking-tight">{job.title}</h1>
-							<Separator className="my-2" />
+							<Divider marginY="8px" />
 							<p className=" font-normal text-base">{job.company}</p>
 							<span className="flex justify-between items-center">
 								<p className="text-sm text-muted-foreground">
