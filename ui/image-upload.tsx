@@ -110,9 +110,11 @@ const ImageUpload = () => {
 
 	return (
 		<div className="max-w-4xl mx-auto w-full">
-			<div className="w-64 md:w-full mx-auto">
+			<div className="w-64 md:w-full mx-auto max-w-md">
 				<h1>Add a Photo</h1>
-				<Divider width="100%" />
+				<div>
+					<Divider width="100%" />
+				</div>
 			</div>
 			<form onSubmit={handleSubmit}>
 				{!selectedFile ? (
