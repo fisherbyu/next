@@ -124,7 +124,16 @@ const ImageUpload = () => {
 					</div>
 				</div>
 			) : (
-				<div className="mt-4">
+				<div className=" flex flex-col md:flex-row gap-2">
+					{preview && (
+						<img
+							src={preview}
+							alt="Preview"
+							className="w-full h-full object-cover rounded"
+							style={{ height: 'auto', width: 'auto', maxWidth: '256px', maxHeight: '500px' }}
+						/>
+					)}
+
 					<div className="mb-4">
 						<label className="block text-sm font-medium text-gray-700 mb-1">Filename:</label>
 						<input
@@ -138,16 +147,9 @@ const ImageUpload = () => {
 						<p className="text-xs text-gray-500 mt-1">Extension: .{selectedFile.name.split('.').pop()}</p>
 					</div>
 
-					{preview && (
-						<img
-							src={preview}
-							alt="Preview"
-							className="w-full h-full object-cover rounded"
-							style={{ height: 'auto', width: 'auto', maxWidth: '256px', maxHeight: '256px' }}
-						/>
-					)}
-
-					<Button type="submit">Upload Image</Button>
+					<Button type="submit" fullWidth>
+						Upload Image
+					</Button>
 				</div>
 			)}
 
