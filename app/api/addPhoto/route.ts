@@ -38,10 +38,16 @@ export async function POST(request: Request) {
     // Get file extension and clean the filename
     const fileExtension = path.extname(file.name).toLowerCase();
     const baseFilename = path.basename(file.name, fileExtension)
-      .replace(/[^a-zA-Z0-9-]/g, '') // Allow hyphens in the filename
-      .slice(0, 32);
+      .toLowerCase()                     // Convert to lowercase first
+      .replace(/[\s_]+/g, '-')          // Replace spaces and underscores with single hyphen
+      .replace(/-+/g, '-')              // Replace multiple hyphens with single hyphen
+      .replace(/[^a-z0-9-]/g, '')       // Remove any remaining special characters
+      .replace(/^-+|-+$/g, '')          // Remove hyphens from start and end
+      .slice(0, 32);                    // Limit length to 32 characters
 
-    let filename = `${baseFilename}${fileExtension}`;
+    // If the filename is empty after cleaning, generate a default name
+    const safeFilename = baseFilename || 'file';
+    let filename = `${safeFilename}${fileExtension}`;
     let filepath = path.join(uploadsDir, filename);
     
     // Check if file exists and append number if it does
