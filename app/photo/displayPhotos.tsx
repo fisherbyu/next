@@ -25,7 +25,7 @@ const fetcher = async (url: string): Promise<PhotoResponse> => {
 
 export default function DisplayPhotos() {
 	const { data, error } = useSWR<PhotoResponse>('/api/getPhotos', fetcher, {
-		refreshInterval: 60000, // Poll every minute
+		// refreshInterval: 60000, // Poll every minute
 		revalidateOnFocus: true, // Revalidate when tab becomes active
 	});
 
