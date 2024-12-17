@@ -13,7 +13,7 @@ export default function DisplayPhotos() {
 	const [photos, setPhotos] = useState<ImageMetadata[]>([]);
 	const [lastUpdate, setLastUpdate] = useState<number>(0);
 
-	// Fetch photos from the API
+	// Fetch photos from API
 	const fetchPhotos = async () => {
 		try {
 			const response = await fetch('/api/getPhotos');
@@ -28,7 +28,7 @@ export default function DisplayPhotos() {
 		}
 	};
 
-	// Initial load and periodic check for updates
+	// Initial load and (1 min) check for updates
 	useEffect(() => {
 		fetchPhotos();
 
@@ -37,7 +37,6 @@ export default function DisplayPhotos() {
 		return () => clearInterval(interval);
 	}, []);
 
-	// Memoize the photo list to prevent unnecessary re-renders
 	const photoList = useMemo(() => {
 		return photos.map((photo) => (
 			<Image
