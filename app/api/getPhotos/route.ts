@@ -2,29 +2,28 @@
 import { NextResponse } from 'next/server';
 import path from 'path';
 import fs from 'fs';
+import sharp from 'sharp';
 
-// Define types for our cache
+interface ImageMetadata {
+	src: string;
+	alt: string;
+	lastModified: number;
+	width: number;
+	height: number;
+}
+
 interface PhotoCache {
 	images: ImageMetadata[];
 	lastUpdate: number;
 	lastCheck: number;
 }
 
-interface ImageMetadata {
-	src: string;
-	alt: string;
-	lastModified: number;
-}
-
-// Declare global cache variable
 declare global {
 	var photoCache: PhotoCache | undefined;
 }
 
-// Cache duration (5 minutes)
 const CACHE_DURATION = 1 * 60 * 1000;
 
-// Helper function to convert filename to proper alt text
 const getAltText = (filename: string): string => {
 	return filename
 		.replace(/\.[^/.]+$/, '')
@@ -33,7 +32,6 @@ const getAltText = (filename: string): string => {
 		.join(' ');
 };
 
-// Fisher-Yates shuffle algorithm
 function shuffleArray<T>(array: T[]): T[] {
 	const shuffled = [...array];
 	for (let i = shuffled.length - 1; i > 0; i--) {
@@ -43,18 +41,40 @@ function shuffleArray<T>(array: T[]): T[] {
 	return shuffled;
 }
 
-// Function to load images
+async function getImageDimensions(filepath: string): Promise<{ width: number; height: number }> {
+	try {
+		const metadata = await sharp(filepath).metadata();
+		return {
+			width: metadata.width || 0,
+			height: metadata.height || 0,
+		};
+	} catch (error) {
+		console.error(`Error getting dimensions for ${filepath}:`, error);
+		return { width: 0, height: 0 };
+	}
+}
+
 async function loadImages() {
 	const imagesDirectory = path.join(process.cwd(), 'public', 'photography');
 	const filenames = fs.readdirSync(imagesDirectory);
 
-	const imageMetadata = filenames
+	// Process images in parallel for better performance
+	const imageMetadataPromises = filenames
 		.filter((filename) => /\.(jpg|jpeg|png|webp)$/i.test(filename))
-		.map((filename) => ({
-			src: `/photography/${filename}`,
-			alt: getAltText(filename),
-			lastModified: fs.statSync(path.join(imagesDirectory, filename)).mtime.getTime(),
-		}));
+		.map(async (filename) => {
+			const filepath = path.join(imagesDirectory, filename);
+			const dimensions = await getImageDimensions(filepath);
+
+			return {
+				src: `/photography/${filename}`,
+				alt: getAltText(filename),
+				lastModified: fs.statSync(filepath).mtime.getTime(),
+				width: dimensions.width,
+				height: dimensions.height,
+			};
+		});
+
+	const imageMetadata = await Promise.all(imageMetadataPromises);
 
 	return {
 		images: shuffleArray(imageMetadata),
@@ -63,22 +83,16 @@ async function loadImages() {
 	};
 }
 
-// GET handler for the API route
 export async function GET() {
 	try {
 		const now = Date.now();
 
-		// Check if cache exists and is still valid
 		if (global.photoCache && now - global.photoCache.lastCheck < CACHE_DURATION) {
 			return NextResponse.json(global.photoCache);
 		}
 
-		// Load fresh data
 		const freshData = await loadImages();
-
-		// Update cache
 		global.photoCache = freshData;
-
 		return NextResponse.json(freshData);
 	} catch (error) {
 		console.error('Error loading images:', error);
