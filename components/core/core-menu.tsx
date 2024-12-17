@@ -107,7 +107,7 @@ export function CoreMenu() {
 						list-style: none;
 					}
 				`}</style>
-				<nav className=" container relative mx-auto w-full flex gap-x-5 justify-between lg:justify-start items-center">
+				<nav className="min-h-[5rem] container relative mx-auto w-full flex gap-x-5 justify-between lg:justify-start items-center">
 					<div className="flex items-center w-96 max-w-fit ">
 						<Link onClick={closeNavbar} href="/" passHref className={LogoStyles}>
 							<Image src={Logo} alt="Andrew Fisher" className="cursor-pointer" />
@@ -116,7 +116,11 @@ export function CoreMenu() {
 					<div
 						className={`
                             absolute top-full left-0 bg-white dark:bg-gray-950 lg:bg-transparent border-b border-gray-200 dark:border-gray-800 py-8 lg:py-0 px-5 sm:px-10 md:px-12 lg:px-0 lg:border-none w-full lg:top-0 lg:relative lg:w-max lg:flex md:transition-none gap-x-6
-                            ${navIsOpened ? 'duration-300 ease-linear visible opacity-100 translate-y-0' : 'duration-300 ease-linear translate-y-10 opacity-0 invisible lg:visible lg:translate-y-0 lg:opacity-100'}
+                            ${
+								navIsOpened
+									? 'duration-300 ease-linear visible opacity-100 translate-y-0'
+									: 'duration-300 ease-linear translate-y-10 opacity-0 invisible lg:visible lg:translate-y-0 lg:opacity-100'
+							}
                         `}
 					>
 						<ul className="flex flex-col lg:flex-row gap-6 lg:items-center text-gray-700 dark:text-gray-300 lg:w-full lg:justify-center">
@@ -144,7 +148,9 @@ export function CoreMenu() {
 												strokeWidth="2"
 												strokeLinecap="round"
 												strokeLinejoin="round"
-												className={` relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open] ${isDropdownHovered ? 'rotate-180' : ''}`}
+												className={` relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open] ${
+													isDropdownHovered ? 'rotate-180' : ''
+												}`}
 											>
 												<path d="m6 9 6 6 6-6"></path>
 											</svg>
