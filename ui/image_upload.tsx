@@ -81,7 +81,7 @@ const ImageUpload = () => {
 
     try {
       setUploadStatus('Uploading...');
-      const response = await fetch('/api/uploadPhoto', {
+      const response = await fetch('/api/addPhoto', {
         method: 'POST',
         body: formData,
       });
