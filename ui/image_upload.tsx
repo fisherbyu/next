@@ -102,7 +102,7 @@ const ImageUpload = () => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className="w-full max-w-md mx-auto p-4 flex flex-col md:flex-row items-center justify-center">
+		<form onSubmit={handleSubmit} className="w-full mx-auto p-4 flex items-center justify-center">
 			{!selectedFile ? (
 				<div
 					className={`border-2 border-dashed rounded-lg p-8 text-center ${
@@ -124,7 +124,7 @@ const ImageUpload = () => {
 					</div>
 				</div>
 			) : (
-				<div className=" flex flex-col md:flex-row gap-2">
+				<div className="flex flex-col md:flex-row gap-4 items-center justify-around sm:w-full lg:w-8/12">
 					{preview && (
 						<img
 							src={preview}
@@ -134,7 +134,7 @@ const ImageUpload = () => {
 						/>
 					)}
 
-					<div className="mb-4">
+					<div className="mb-4 flex flex-col gap-2 items-center justify-center md:self-end h-10">
 						<label className="block text-sm font-medium text-gray-700 mb-1">Filename:</label>
 						<input
 							type="text"
@@ -145,11 +145,10 @@ const ImageUpload = () => {
 							required
 						/>
 						<p className="text-xs text-gray-500 mt-1">Extension: .{selectedFile.name.split('.').pop()}</p>
+						<Button type="submit" fullWidth>
+							Upload Image
+						</Button>
 					</div>
-
-					<Button type="submit" fullWidth>
-						Upload Image
-					</Button>
 				</div>
 			)}
 
