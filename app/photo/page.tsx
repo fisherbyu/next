@@ -1,13 +1,6 @@
 import type { Metadata } from "next";
-import { StaticImageData } from "next/image";
-import Image from "next/image";
-import MasonryBlock from "@/components/ui/masonry-block";
 import PageTitle from "@/components/ui/page-title";
-import { MasonryLayout } from "thread-ui";
-import path from 'path';
-import fs from 'fs';
 import DisplayPhotos from "./displayPhotos";
-
 
 const title = {
   title: "My Photography",
