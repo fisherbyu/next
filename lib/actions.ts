@@ -11,7 +11,7 @@ export async function authenticate(prevState: string | undefined, formData: Form
 			redirect: false,
 		});
 
-		// If we get here, sign-in was successful
+		// If sign in was already succesful @ '/login', redirect to '/'
 		redirect('/admin');
 	} catch (error) {
 		if (error instanceof AuthError) {
