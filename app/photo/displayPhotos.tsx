@@ -2,6 +2,7 @@
 import useSWR from 'swr';
 import Image from 'next/image';
 import { MasonryLayout } from 'thread-ui';
+import PhotoSkeleton from './photoSkeleton';
 
 interface ImageMetadata {
 	src: string;
@@ -33,7 +34,7 @@ export default function DisplayPhotos() {
 	}
 
 	if (!data) {
-		return <div>Loading...</div>;
+		return <PhotoSkeleton />;
 	}
 
 	const photoList = data.images.map((photo) => (
