@@ -156,8 +156,8 @@ const ImageUpload = () => {
 									required
 								/>
 								<p className="text-xs text-gray-500 mt-1">Extension: .{selectedFile.name.split('.').pop()}</p>
+								{uploadStatus && <p className="text-sm text-gray-600">{uploadStatus}</p>}
 							</div>
-							{uploadStatus && <p className="text-sm text-gray-600">{uploadStatus}</p>}
 							<div className="flex gap-2">
 								{uploadStatus === 'Upload successful!' ? (
 									<Button type="button" onClick={handleRemoveFile} fullWidth>
