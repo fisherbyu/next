@@ -118,7 +118,7 @@ const ImageUpload = () => {
         <p className="text-xs text-gray-500 mb-4">
           Supports: JPG, PNG, GIF
         </p>
-
+  
         <div className="flex items-center justify-center">
           <label className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded cursor-pointer">
             Select File
@@ -151,16 +151,21 @@ const ImageUpload = () => {
             </div>
             
             {preview && (
-              <img
-                src={preview}
-                alt="Preview"
-                className="max-w-full h-auto rounded"
-              />
+              <div className="flex justify-center w-full">
+                <div className="w-64 h-64">
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className="w-full h-full object-cover rounded"
+                    style={{height: "auto", width: "auto", maxWidth: '256px', maxHeight: '256px' }}
+                  />
+                </div>
+              </div>
             )}
-            <Button type='submit'>
-                Upload Image
-            </Button>
             
+            <Button type="submit">
+              Upload Image
+            </Button>
           </div>
         )}
         
