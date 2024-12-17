@@ -63,7 +63,7 @@ export async function POST(request: Request) {
     await writeFile(filepath, new Uint8Array(buffer));
 
     // Return the public URL
-    const publicPath = `/uploads/${filename}`;
+    const publicPath = `/photography/${filename}`;
     
     return NextResponse.json({
       success: true,
