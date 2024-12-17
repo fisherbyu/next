@@ -153,6 +153,7 @@ const ImageUpload = () => {
 								/>
 								<p className="text-xs text-gray-500 mt-1">Extension: .{selectedFile.name.split('.').pop()}</p>
 							</div>
+							{uploadStatus && <p className="text-sm text-gray-600">{uploadStatus}</p>}
 							<div className="flex gap-2">
 								<Button type="button" color="error" onClick={handleRemoveFile}>
 									Remove
@@ -161,7 +162,6 @@ const ImageUpload = () => {
 									Upload Image
 								</Button>
 							</div>
-							{uploadStatus && <p className="text-sm text-gray-600">{uploadStatus}</p>}
 						</div>
 					</div>
 				)}
