@@ -5,89 +5,77 @@ import path from 'path';
 import { mkdir, access } from 'fs/promises';
 
 export async function POST(request: Request) {
-  try {
-    const formData = await request.formData();
-    const file = formData.get('image') as File | null;
-    
-    if (!file) {
-      return NextResponse.json(
-        { error: 'No file uploaded' },
-        { status: 400 }
-      );
-    }
+	try {
+		const formData = await request.formData();
+		const file = formData.get('image') as File | null;
 
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      return NextResponse.json(
-        { error: 'File must be an image' },
-        { status: 400 }
-      );
-    }
+		if (!file) {
+			return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
+		}
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+		// Validate file type
+		if (!file.type.startsWith('image/')) {
+			return NextResponse.json({ error: 'File must be an image' }, { status: 400 });
+		}
 
-    // Create uploads directory if it doesn't exist
-    const uploadsDir = path.join(process.cwd(), 'public', 'photography');
-    try {
-      await mkdir(uploadsDir, { recursive: true });
-    } catch (error) {
-      // Directory already exists
-    }
+		const bytes = await file.arrayBuffer();
+		const buffer = Buffer.from(bytes);
 
-    // Get file extension and clean the filename
-    const fileExtension = path.extname(file.name).toLowerCase();
-    const baseFilename = path.basename(file.name, fileExtension)
-      .toLowerCase()                     // Convert to lowercase first
-      .replace(/[\s_]+/g, '-')          // Replace spaces and underscores with single hyphen
-      .replace(/-+/g, '-')              // Replace multiple hyphens with single hyphen
-      .replace(/[^a-z0-9-]/g, '')       // Remove any remaining special characters
-      .replace(/^-+|-+$/g, '')          // Remove hyphens from start and end
-      .slice(0, 32);                    // Limit length to 32 characters
+		// Create uploads directory if it doesn't exist
+		const uploadsDir = path.join(process.cwd(), 'public', 'photography');
+		try {
+			await mkdir(uploadsDir, { recursive: true });
+		} catch (error) {
+			// Directory already exists
+		}
 
-    // If the filename is empty after cleaning, generate a default name
-    const safeFilename = baseFilename || 'file';
-    let filename = `${safeFilename}${fileExtension}`;
-    let filepath = path.join(uploadsDir, filename);
-    
-    // Check if file exists and append number if it does
-    let counter = 1;
-    while (true) {
-      try {
-        await access(filepath);
-        // File exists, try next number
-        filename = `${baseFilename}-${counter}${fileExtension}`;
-        filepath = path.join(uploadsDir, filename);
-        counter++;
-      } catch {
-        // File doesn't exist, we can use this name
-        break;
-      }
-    }
-    
-    // Save the file using Uint8Array
-    await writeFile(filepath, new Uint8Array(buffer));
+		// Get file extension and clean the filename
+		const fileExtension = path.extname(file.name).toLowerCase();
+		const baseFilename = path
+			.basename(file.name, fileExtension)
+			.toLowerCase() // Convert to lowercase first
+			.replace(/[\s_]+/g, '-') // Replace spaces and underscores with single hyphen
+			.replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+			.replace(/[^a-z0-9-]/g, '') // Remove any remaining special characters
+			.replace(/^-+|-+$/g, '') // Remove hyphens from start and end
+			.slice(0, 32); // Limit length to 32 characters
 
-    // Return the public URL
-    const publicPath = `/photography/${filename}`;
-    
-    return NextResponse.json({
-      success: true,
-      url: publicPath
-    });
-    
-  } catch (error) {
-    console.error('Error uploading file:', error);
-    return NextResponse.json(
-      { error: 'Error uploading file' },
-      { status: 500 }
-    );
-  }
+		// If the filename is empty after cleaning, generate a default name
+		const safeFilename = baseFilename || 'file';
+		let filename = `${safeFilename}${fileExtension}`;
+		let filepath = path.join(uploadsDir, filename);
+
+		// Check if file exists and append number if it does
+		let counter = 1;
+		while (true) {
+			try {
+				await access(filepath);
+				// File exists, try next number
+				filename = `${baseFilename}-${counter}${fileExtension}`;
+				filepath = path.join(uploadsDir, filename);
+				counter++;
+			} catch {
+				// File doesn't exist, we can use this name
+				break;
+			}
+		}
+
+		// Save the file using Uint8Array
+		await writeFile(filepath, new Uint8Array(buffer));
+
+		// Return the public URL
+		const publicPath = `/photography/${filename}`;
+
+		return NextResponse.json({
+			success: true,
+			url: publicPath,
+		});
+	} catch (error) {
+		console.error('Error uploading file:', error);
+		return NextResponse.json({ error: 'Error uploading file' }, { status: 500 });
+	}
 }
 
 export async function GET() {
-  return NextResponse.json(
-    { error: 'Method not allowed' },
-    { status: 405 }
-  );
+	return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
 }
