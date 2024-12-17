@@ -19,9 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={coreFont.className}>
+      <body className={`${coreFont.className} min-h-screen flex flex-col`}>
         <CoreMenu />
-        {children}
+        <main className="flex-1">
+          {children}
+        </main>
         <CoreFooter />
       </body>
     </html>
