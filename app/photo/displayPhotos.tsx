@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useMemo } from 'react';
+import useSWR from 'swr';
 import Image from 'next/image';
 import { MasonryLayout } from 'thread-ui';
 
@@ -9,46 +9,43 @@ interface ImageMetadata {
 	lastModified: number;
 }
 
+interface PhotoResponse {
+	images: ImageMetadata[];
+	lastUpdate: number;
+}
+
+const fetcher = async (url: string): Promise<PhotoResponse> => {
+	const response = await fetch(url);
+	if (!response.ok) {
+		throw new Error('Failed to fetch photos');
+	}
+	return response.json();
+};
+
 export default function DisplayPhotos() {
-	const [photos, setPhotos] = useState<ImageMetadata[]>([]);
-	const [lastUpdate, setLastUpdate] = useState<number>(0);
+	const { data, error } = useSWR<PhotoResponse>('/api/getPhotos', fetcher, {
+		refreshInterval: 60000, // Poll every minute
+		revalidateOnFocus: true, // Revalidate when tab becomes active
+	});
 
-	// Fetch photos from API
-	const fetchPhotos = async () => {
-		try {
-			const response = await fetch('/api/getPhotos');
-			const data = await response.json();
+	if (error) {
+		return <div>Error loading photos</div>;
+	}
 
-			if (data.lastUpdate !== lastUpdate) {
-				setPhotos(data.images);
-				setLastUpdate(data.lastUpdate);
-			}
-		} catch (error) {
-			console.error('Error fetching photos:', error);
-		}
-	};
+	if (!data) {
+		return <div>Loading...</div>;
+	}
 
-	// Initial load and (1 min) check for updates
-	useEffect(() => {
-		fetchPhotos();
-
-		// Check for new photos every minute
-		const interval = setInterval(fetchPhotos, 60000);
-		return () => clearInterval(interval);
-	}, []);
-
-	const photoList = useMemo(() => {
-		return photos.map((photo) => (
-			<Image
-				key={photo.alt}
-				src={photo.src}
-				alt={photo.alt}
-				width={500}
-				height={300}
-				sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-			/>
-		));
-	}, [photos]);
+	const photoList = data.images.map((photo) => (
+		<Image
+			key={photo.alt}
+			src={photo.src}
+			alt={photo.alt}
+			width={500}
+			height={300}
+			sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+		/>
+	));
 
 	return <MasonryLayout components={photoList} />;
 }
