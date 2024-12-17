@@ -2,7 +2,6 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from './auth.config';
 import { z } from 'zod';
-import bcrypt from 'bcrypt';
 import { User } from '@/lib/definitions/user';
 
 import { Admin } from './lib/constants/admin';
@@ -25,9 +24,7 @@ export const { auth, signIn, signOut } = NextAuth({
 					const { password } = parsedCredentials.data;
 					const adminPassword = getPassword();
 					if (!adminPassword) return null;
-					console.log(adminPassword);
 
-					// const passwordsMatch = await bcrypt.compare(password, adminPassword);
 					const passwordsMatch = password === adminPassword;
 
 					if (passwordsMatch) return Admin;
