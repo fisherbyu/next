@@ -148,11 +148,10 @@ const ImageUpload = () => {
 						<Button type="submit" fullWidth>
 							Upload Image
 						</Button>
+						{uploadStatus && <p className="mt-2 text-sm text-gray-600">{uploadStatus}</p>}
 					</div>
 				</div>
 			)}
-
-			{uploadStatus && <p className="mt-2 text-sm text-gray-600">{uploadStatus}</p>}
 		</form>
 	);
 };
