@@ -1,6 +1,4 @@
-// components/ImageUpload.tsx
 'use client';
-
 import { useState, useCallback, FormEvent } from 'react';
 import { Upload } from 'lucide-react';
 import { Button } from 'thread-ui';
