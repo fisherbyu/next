@@ -59,6 +59,13 @@ const ImageUpload = () => {
 		}
 	};
 
+	const handleRemoveFile = () => {
+		setSelectedFile(null);
+		setPreview(null);
+		setCustomFilename('');
+		setUploadStatus('');
+	};
+
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
@@ -124,7 +131,7 @@ const ImageUpload = () => {
 						</div>
 					</div>
 				) : (
-					<div className="flex gap-2 lg:flex-row w-full md:w-8/12 mx-auto flex-col md:flex-row md:justify-between items-center">
+					<div className="flex gap-4 lg:flex-row w-full md:w-8/12 mx-auto flex-col md:flex-row md:justify-between items-center">
 						{preview && (
 							<img
 								src={preview}
@@ -146,9 +153,14 @@ const ImageUpload = () => {
 								/>
 								<p className="text-xs text-gray-500 mt-1">Extension: .{selectedFile.name.split('.').pop()}</p>
 							</div>
-							<Button type="submit" fullWidth>
-								Upload Image
-							</Button>
+							<div className="flex gap-2">
+								<Button type="button" color="error" onClick={handleRemoveFile}>
+									Remove
+								</Button>
+								<Button type="submit" fullWidth>
+									Upload Image
+								</Button>
+							</div>
 							{uploadStatus && <p className="text-sm text-gray-600">{uploadStatus}</p>}
 						</div>
 					</div>
