@@ -1,5 +1,5 @@
 import PageTitle from '@/components/ui/page-title';
-import ImageUpload from '@/ui/image_upload';
+import ImageUpload from '@/ui/image-upload';
 
 const title: { title: string; subtitle?: string; center?: boolean } = {
 	title: 'Add a Photo',
