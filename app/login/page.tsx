@@ -1,5 +1,5 @@
 'use client';
-import { LoginForm } from '@/ui/login_form';
+import { LoginForm } from '@/ui/login-form';
 
 export default function Login() {
 	return (
