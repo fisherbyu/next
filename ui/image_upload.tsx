@@ -151,16 +151,12 @@ const ImageUpload = () => {
             </div>
             
             {preview && (
-              <div className="flex justify-center w-full">
-                <div className="w-64 h-64">
-                  <img
-                    src={preview}
-                    alt="Preview"
-                    className="w-full h-full object-cover rounded"
-                    style={{height: "auto", width: "auto", maxWidth: '256px', maxHeight: '256px' }}
-                  />
-                </div>
-              </div>
+              <img
+              src={preview}
+              alt="Preview"
+              className="w-full h-full object-cover rounded"
+              style={{height: "auto", width: "auto", maxWidth: '256px', maxHeight: '256px' }}
+            />
           )}
             
             <Button type="submit">
