@@ -1,7 +1,7 @@
 'use client';
 import { useState, useCallback, FormEvent } from 'react';
 import { Upload } from 'lucide-react';
-import { Button } from 'thread-ui';
+import { Button, Divider } from 'thread-ui';
 
 const ImageUpload = () => {
 	const [isDragging, setIsDragging] = useState(false);
@@ -110,6 +110,10 @@ const ImageUpload = () => {
 
 	return (
 		<div className="max-w-4xl mx-auto w-full">
+			<div className="w-64 md:w-full mx-auto">
+				<h1>Add a Photo</h1>
+				<Divider width="100%" />
+			</div>
 			<form onSubmit={handleSubmit}>
 				{!selectedFile ? (
 					<div
@@ -155,12 +159,20 @@ const ImageUpload = () => {
 							</div>
 							{uploadStatus && <p className="text-sm text-gray-600">{uploadStatus}</p>}
 							<div className="flex gap-2">
-								<Button type="button" color="error" onClick={handleRemoveFile}>
-									Remove
-								</Button>
-								<Button type="submit" fullWidth>
-									Upload Image
-								</Button>
+								{uploadStatus === 'Upload successful!' ? (
+									<Button type="button" onClick={handleRemoveFile} fullWidth>
+										Submit Another
+									</Button>
+								) : (
+									<>
+										<Button type="button" color="error" onClick={handleRemoveFile}>
+											Remove
+										</Button>
+										<Button type="submit" fullWidth>
+											Upload Image
+										</Button>
+									</>
+								)}
 							</div>
 						</div>
 					</div>
