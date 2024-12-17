@@ -161,7 +161,7 @@ const ImageUpload = () => {
                   />
                 </div>
               </div>
-            )}
+          )}
             
             <Button type="submit">
               Upload Image
