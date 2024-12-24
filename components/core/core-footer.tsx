@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import GitHubIcon from '@/public/core/github.svg';
 import LinkedInIcon from '@/public/core/linkedin.svg';
-import { Separator } from '@/components/ui/separator';
 import AFLogo from '@/public/core/af-logo.svg';
 import Link from 'next/link';
 import { Divider } from 'thread-ui';
