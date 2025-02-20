@@ -1,7 +1,6 @@
-// app/config/theme.ts
-import { createTheme, createAppliedTheme } from 'thread-ui';
+import { createTheme } from 'thread-ui';
 
-const THREAD_CONFIG = {
+const threadConfig = {
 	colors: {
 		primary: {
 			light: '#4f46e5',
@@ -11,10 +10,5 @@ const THREAD_CONFIG = {
 	},
 } as const;
 
-// Create once at module level
-export const BASE_THEME = createTheme(THREAD_CONFIG);
-
-// Export a function to get theme settings
-export function getThemeSettings(mode: 'light' | 'dark' = 'light') {
-	return createAppliedTheme(BASE_THEME, mode);
-}
+// Initialize Theme
+export const ThreadTheme = createTheme(threadConfig);
