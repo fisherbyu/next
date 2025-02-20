@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Merriweather_Sans } from 'next/font/google';
 import '@/styles/globals.css';
-
+import { Providers } from './providers';
 import { CoreMenu } from '@/components/core/core-menu';
 import CoreFooter from '@/components/core/core-footer';
 
@@ -20,9 +20,11 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${coreFont.className} flex flex-col h-screen justify-between`}>
-				<CoreMenu />
-				<main>{children}</main>
-				<CoreFooter />
+				<Providers>
+					<CoreMenu />
+					<main>{children}</main>
+					<CoreFooter />
+				</Providers>
 			</body>
 		</html>
 	);
