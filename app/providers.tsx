@@ -1,7 +1,6 @@
-// app/providers.tsx
 'use client';
 import { ThemeProvider } from 'thread-ui';
-import { ThreadTheme } from './config/theme';
+import { ThreadTheme } from '@/thread.config';
 
 export function Providers({ children }: { children: React.ReactNode }) {
 	return (
